@@ -1,45 +1,45 @@
-page 50171 "Employees List"
+page 50192 "Assets List"
 {
     PageType = List;
-    SourceTable = "Employee Table";
+    SourceTable = Assets;
+    Caption = 'Assets';
     ApplicationArea = All;
-    Caption = 'Employee List';
-    Editable = false; 
+    CardPageId="Assets Card";
     UsageCategory = Lists;
-    CardPageId = "Employees Card"; 
 
     layout
     {
-        area(Content)
+        area(content)
         {
             repeater(Group)
             {
-                field("Employee Id"; Rec."Employee Id")
+                 Editable = false; 
+                field("Serial No."; rec."Serial No.")
                 {
                     ApplicationArea = All;
                 }
-                field("Employee Name"; Rec."Employee Name")
+                field("Asset Type";rec. "Asset Type")
                 {
                     ApplicationArea = All;
                 }
-                field(Role; Rec.Role)
+                field("Procured Date";rec. "Procured Date")
                 {
                     ApplicationArea = All;
                 }
-                field(Department; Rec.Department)
+                field("Vendor"; rec."Vendor")
                 {
                     ApplicationArea = All;
                 }
             }
+            
         }
-
         area(FactBoxes)
+        
         {
-            part(EmployeeAssetCue; "Employee Asset Cue FactBox")
+            part(AssetStatusFactBox; "Asset Status FactBox")
             {
                 ApplicationArea = All;
-                SubPageLink = "Employee ID" = field("Employee Id"); 
             }
-        }
     }
+}
 }

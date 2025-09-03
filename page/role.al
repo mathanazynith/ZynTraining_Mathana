@@ -62,6 +62,16 @@ page 50105 "My Role Center"
                     //RunObject= page 22;
                 }
             }
+            group(EmployeeAsset)
+            {
+                Caption = 'Employee Assert';
+
+                action(Asset)
+                {
+                    Caption = 'Asset';
+                    RunObject= page 50198;
+                }
+            }
         }
 
     }
