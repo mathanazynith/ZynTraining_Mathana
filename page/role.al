@@ -8,13 +8,21 @@ page 50105 "My Role Center"
     layout
     {
         area(RoleCenter)
-        {
-            group(cutomer)
+        {     
+            group(Subscription)
             {
-                part("customerCardpart"; customecard)
-                {
+                // part("customerCardpart"; customecard)  
+                // {
 
-                }
+                // }
+                part(SubscriptionCue; "Subscription Cue Page")
+            {
+                ApplicationArea = All;
+            }
+            part(RecurringInvoiceAmount; "Recurring Invoice FactBox")
+            {
+                ApplicationArea = All;
+            }
             }
         }
     }
@@ -26,7 +34,7 @@ page 50105 "My Role Center"
     {
         area(Sections)
         {
-            group(customer)
+            group(cutomer)  
             {
                 Caption = 'customer';
 
@@ -62,14 +70,93 @@ page 50105 "My Role Center"
                     //RunObject= page 22;
                 }
             }
-            group(EmployeeAsset)
-            {
-                Caption = 'Employee Assert';
-
-                action(Asset)
+             group(EmployeeAssetManagement){
+             action("Employee Assets")
                 {
-                    Caption = 'Asset';
-                    RunObject= page 50198;
+                    ApplicationArea = All;
+                    Caption = 'Employee Assets';
+                    RunObject = page "Employee Asset List";
+                    
+                }
+                action("Assets")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Assets';
+                    RunObject = page "Assets List";
+                    
+                }
+                action("Assets Category")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Assets Category';
+                    RunObject = page "Asset Type list";
+                    
+                }
+            }
+            group(Employees){
+             action("Employee List")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Employees';
+                    RunObject = page "Employees List";
+                    
+                }
+                action("Leave Category")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Leave Category';
+                    RunObject = page "Leave Category List";
+                    
+                }
+                action("Leave Request")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Leave Request';
+                    RunObject = page "Leave Request List";
+                    
+                }
+            }
+            group(Expenses){
+             action("Expense category")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Expense Category';
+                    RunObject = page "Expense Category List";
+                    
+                }
+                action("Expense List")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Expenses';
+                    RunObject = page "Expense Tracker List";
+                    
+                }
+                
+            }
+            group(Budget){
+             action("Budget List")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Budget';
+                    RunObject = page "Budget Tracker List";
+                    
+                }
+                
+            }
+            group(Income){
+             action("IncomeList")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Income';
+                    RunObject = page "Income Tracker List";
+                    
+                }
+                action("IncomeCategory")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Income Category';
+                    RunObject = page "Income Category List";
+                    
                 }
             }
         }
