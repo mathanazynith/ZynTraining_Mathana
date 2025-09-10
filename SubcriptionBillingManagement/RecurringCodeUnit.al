@@ -7,7 +7,7 @@ codeunit 50350 "Recurring Invoice Processor"
         CreateRecurringInvoices();
     end;
 
-    local procedure CreateRecurringInvoices()
+    local procedure CreateRecurringInvoices()  
     var
         RecInv: Record "Recurring Sales Invoice";
         SubRec: Record Subscription;

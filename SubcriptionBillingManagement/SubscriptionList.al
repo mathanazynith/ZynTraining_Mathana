@@ -22,6 +22,9 @@ page 50205 "Subscription List"
                 field("End Date"; Rec."End Date") { ApplicationArea = All; }
                 field("Next Billing Date"; Rec."Next Billing Date") { ApplicationArea = All; }
                 field("Status"; Rec.Status) { ApplicationArea = All; }
+                field("Next Renewal Date"; rec."Next Renewal Date") { ApplicationArea = All; }
+                
+                field("Reminder Sent"; rec."Reminder Sent") { ApplicationArea = All;}
             }
         }
     }

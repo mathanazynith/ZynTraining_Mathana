@@ -33,7 +33,7 @@ table 50110 Subscription
             trigger OnValidate()
             begin
                 if "Number of Months" > 0 then
-                    CalcEndDate;
+                    CalcEndDate();
                 if "Next Billing Date" = 0D then
                     "Next Billing Date" := "Start Date";
             end;
@@ -42,7 +42,7 @@ table 50110 Subscription
         field(5; "End Date"; Date)
         {
             Caption = 'End Date';
-            Editable = false; 
+            Editable = false;
             DataClassification = CustomerContent;
         }
 
@@ -54,7 +54,7 @@ table 50110 Subscription
             trigger OnValidate()
             begin
                 if "Start Date" <> 0D then
-                    CalcEndDate;
+                    CalcEndDate();
             end;
         }
 
@@ -68,7 +68,21 @@ table 50110 Subscription
         {
             Caption = 'Status';
             DataClassification = CustomerContent;
-            InitValue=Active;
+            InitValue = Active;
+        }
+
+        field(9; "Next Renewal Date"; Date)
+        {
+            Caption = 'Next Renewal Date';
+            Editable = false;
+            DataClassification = CustomerContent;
+        }
+
+        field(10; "Reminder Sent"; Boolean)
+        {
+            Caption = 'Reminder Sent';
+            DataClassification = CustomerContent;
+            InitValue = false;
         }
     }
 
@@ -80,27 +94,57 @@ table 50110 Subscription
         }
     }
 
-    local procedure CalcEndDate()
-    begin
-        if ("Start Date" <> 0D) and ("Number of Months" > 0) then
-            "End Date" := CalcDate(StrSubstNo('<%1M>', "Number of Months"), "Start Date");
-    end;
     trigger OnInsert()
     var
-        LastIndex: Record "Subscription";
+        LastIndex: Record Subscription;
         LastId: Integer;
         LastIdStr: Code[20];
     begin
         
-        if "Subscription Id" = '' then begin
+        if "Subscription ID" = '' then begin
             if LastIndex.FindLast() then
-                Evaluate(LastId, CopyStr(LastIndex."Subscription Id", 4))
+                Evaluate(LastId, CopyStr(LastIndex."Subscription ID", 4))
             else
                 LastId := 0;
 
             LastId += 1;
             LastIdStr := 'SUS' + PadStr(Format(LastId), 3, '0');
-            "Subscription Id" := LastIdStr;
+            "Subscription ID" := LastIdStr;
         end;
+
+    
+        if "Number of Months" > 0 then
+            CalcEndDate();
+
+    
+        if "Next Billing Date" = 0D then
+            "Next Billing Date" := "Start Date";
+
+        
+        UpdateNextRenewalDate();
+    end;
+
+    trigger OnModify()
+    begin
+        UpdateNextRenewalDate();
+    end;
+
+    local procedure CalcEndDate()
+    begin
+        if ("Start Date" <> 0D) and ("Number of Months" > 0) then
+            "End Date" := CalcDate(StrSubstNo('<%1M>', "Number of Months"), "Start Date")
+        else
+            "End Date" := 0D;
+
+    
+        UpdateNextRenewalDate();
+    end;
+
+    local procedure UpdateNextRenewalDate()
+    begin
+        if "End Date" <> 0D then
+            "Next Renewal Date" := CalcDate('<+1D>', "End Date")
+        else
+            "Next Renewal Date" := 0D;
     end;
 }

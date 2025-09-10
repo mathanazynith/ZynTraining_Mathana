@@ -20,6 +20,10 @@ page 50206 "Subscription Card"
                 field("End Date"; rec."End Date") { ApplicationArea = All; Editable = false; }
                 field("Next Billing Date"; rec."Next Billing Date") { ApplicationArea = All; Editable = false; }
                 field("Status"; rec.Status) { ApplicationArea = All;Editable =false; }
+                
+                field("Next Renewal Date"; rec."Next Renewal Date") { ApplicationArea = All;Editable =false; }
+                
+                field("Reminder Sent"; rec."Reminder Sent") { ApplicationArea = All;Editable =false; }
             }
         }
     }
