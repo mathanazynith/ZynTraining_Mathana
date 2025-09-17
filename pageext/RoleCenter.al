@@ -10,7 +10,7 @@ pageextension 50192 "My Role Center Ext" extends "Business Manager Role Center"
             }
             part(ExpiringSubscriptions; "Subscription Expiry Notifier")
             {
-                ApplicationArea = All;
+                ApplicationArea = All;   
             }
         }
     }

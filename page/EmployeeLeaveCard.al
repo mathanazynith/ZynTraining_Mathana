@@ -28,6 +28,7 @@ page 50180 "Employees Card"
                 {
                     ApplicationArea = All;
                 }
+              
             }
         }
     }

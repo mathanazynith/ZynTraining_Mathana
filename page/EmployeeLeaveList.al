@@ -30,8 +30,8 @@ page 50171 "Employees List"
                 {
                     ApplicationArea = All;
                 }
-            }
-        }
+               
+        }}
 
         area(FactBoxes)
         {

@@ -20,7 +20,7 @@ codeunit 50250 "Subscription Expiry Notifier"
 
         if SubRec.FindSet() then
             repeat
-                
+                 
                 NotificationMessage += 
                   StrSubstNo(
                     'Subscription %1 for Customer %2 will expire on %3.' + '\1',
