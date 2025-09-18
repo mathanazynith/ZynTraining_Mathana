@@ -13,20 +13,20 @@ report 50127 "Posted Sales Invoice Report"
             column(No_; "No.") { }
             column(SellToCustomerNo; "Sell-to Customer No.") { }
             column(SellToCustomerName; "Sell-to Customer Name") { }
-            column(PostingDate;Format("Posting Date")) { }
+            column(PostingDate; Format("Posting Date")) { }
             column(DocumentDate; "Document Date") { }
             column(SellToAddress; "Sell-to Address") { }
             column(company; "CompanyName") { }
             column(Address; info.Address) { }
             column(logo; info.Picture) { }
 
-           
+
             dataitem(ExtBegin; "Extended Table")
             {
                 DataItemLink = "Document No." = field("No.");
-               
-                DataItemTableView = 
-                    sorting("Line No.") 
+
+                DataItemTableView =
+                    sorting("Line No.")
                     where(
                         "Text Code Type" = const("Text Code Enum"::"Begin Text Code "),
                         Text = filter(<> '')
@@ -36,7 +36,7 @@ report 50127 "Posted Sales Invoice Report"
                 column(BeginLineText; Text) { }
             }
 
-                       dataitem(InvLine; "Sales Invoice Line")
+            dataitem(InvLine; "Sales Invoice Line")
             {
                 DataItemLink = "Document No." = field("No.");
                 column(LineNo; "Line No.") { }
@@ -46,12 +46,12 @@ report 50127 "Posted Sales Invoice Report"
                 column(LineAmount; "Line Amount") { }
             }
 
-                        dataitem(ExtEnd; "Extended Table")
+            dataitem(ExtEnd; "Extended Table")
             {
                 DataItemLink = "Document No." = field("No.");
-               
-                DataItemTableView = 
-                    sorting("Line No.") 
+
+                DataItemTableView =
+                    sorting("Line No.")
                     where(
                         "Text Code Type" = const("Text Code Enum"::"End Text Code"),
                         Text = filter(<> '')
@@ -61,11 +61,11 @@ report 50127 "Posted Sales Invoice Report"
                 column(EndLineText; Text) { }
             }
         }
-        
-      
+
+
         dataitem("Cust. Ledger Entry"; "Cust. Ledger Entry")
         {
-             DataItemLinkReference = InvHeader;
+            DataItemLinkReference = InvHeader;
             DataItemLink = "Document No." = field("No.");
 
             column(CusDescription; Description)
