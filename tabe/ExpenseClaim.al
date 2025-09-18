@@ -11,7 +11,7 @@ table 50226 "Expense Claim"
             Editable = false;
             DataClassification = CustomerContent;
         }
-        field(2; "Category Code"; Code[20])    
+        field(2; "Category Code"; Code[20])
         {
             Caption = 'Category Code';
             DataClassification = CustomerContent;
@@ -49,48 +49,10 @@ table 50226 "Expense Claim"
             DataClassification = CustomerContent;
 
             trigger OnValidate()
-            var
-                ClaimCategoryRec: Record "Claim Category";
-                ExistingClaim: Record "Expense Claim";
-                ClaimYear: Integer;
-                YearlyUsed: Decimal;
             begin
-
-                ClaimYear := Date2DMY("Claim Date", 3);
-
-
-                if not ClaimCategoryRec.Get("Category Code", "Category Name", Subtype) then
-                    Error(
-                      'Claim Category %1/%2/%3 does not exist.',
-                      "Category Code", "Category Name", Subtype);
-
-
-                YearlyUsed := 0;
-                ExistingClaim.Reset();
-                ExistingClaim.SetRange("Employee No.", "Employee No.");
-                ExistingClaim.SetRange("Category Code", "Category Code");
-                ExistingClaim.SetRange(Subtype, Subtype);
-                ExistingClaim.SetRange(Status, ExistingClaim.Status::Approved);
-                ExistingClaim.SetFilter("Claim Date", '%1..%2', DMY2Date(1, 1, ClaimYear), DMY2Date(31, 12, ClaimYear));
-
-                if ExistingClaim.FindSet() then
-                    repeat
-                        YearlyUsed += ExistingClaim.Amount;
-                    until ExistingClaim.Next() = 0;
-
-
-                if (YearlyUsed + Amount) > ClaimCategoryRec."Amount Limit" then
-                    Error(
-                      'Amount exceeds yearly limit. For Category %1 (%2), yearly limit is %3, already used %4, remaining %5.',
-                      "Category Code", Subtype,
-                      ClaimCategoryRec."Amount Limit",
-                      YearlyUsed,
-                      ClaimCategoryRec."Amount Limit" - YearlyUsed);
+                ValidateClaimAmount;
             end;
         }
-
-
-
 
         field(8; Status; Enum "Expense Claim Status")
         {
@@ -104,8 +66,6 @@ table 50226 "Expense Claim"
             Caption = 'Bill Proof';
             Subtype = Memo;
         }
-
-
 
         field(10; Remarks; Text[40])
         {
@@ -122,6 +82,12 @@ table 50226 "Expense Claim"
         {
             Caption = 'Bill File Name';
             DataClassification = ToBeClassified;
+        }
+        field(13; "Rejection Reason"; Text[100])
+        {
+            Caption = 'Rejection Reason';
+            Editable = false;
+            DataClassification = CustomerContent;
         }
     }
 
@@ -149,5 +115,48 @@ table 50226 "Expense Claim"
             LastIdStr := 'CLA' + PadStr(Format(LastId), 3, '0');
             "Claim ID" := LastIdStr;
         end;
+    end;
+
+    local procedure ValidateClaimAmount()
+    var
+        ClaimCategoryRec: Record "Claim Category";
+        ExistingClaim: Record "Expense Claim";
+        ClaimYear: Integer;
+        YearlyUsed: Decimal;
+        StartOfYear: Date;
+        EndOfYear: Date;
+        ErrMsgCategory: Text;
+        ErrMsgLimit: Text;
+    begin
+        ClaimYear := Date2DMY("Claim Date", 3);
+
+        ErrMsgCategory := 'Claim Category %1 / %2 / %3 does not exist.';
+        ErrMsgLimit := 'Amount exceeds yearly limit. For Category %1 (%2), yearly limit is %3, already used %4, remaining %5.';
+        if not ClaimCategoryRec.Get("Category Code", "Category Name", Subtype) then
+            Error(ErrMsgCategory, "Category Code", "Category Name", Subtype);
+        YearlyUsed := 0;
+        ExistingClaim.Reset();
+        ExistingClaim.SetRange("Employee No.", "Employee No.");
+        ExistingClaim.SetRange("Category Code", "Category Code");
+        ExistingClaim.SetRange(Subtype, Subtype);
+        ExistingClaim.SetRange(Status, ExistingClaim.Status::Approved);
+
+        StartOfYear := CalcDate('<CY>', "Claim Date");
+        EndOfYear := CalcDate('<CY+1Y-1D>', "Claim Date");
+        ExistingClaim.SetFilter("Claim Date", '%1..%2', StartOfYear, EndOfYear);
+
+        if ExistingClaim.FindSet() then
+            repeat
+                YearlyUsed += ExistingClaim.Amount;
+            until ExistingClaim.Next() = 0;
+
+
+        if (YearlyUsed + Amount) > ClaimCategoryRec."Amount Limit" then
+            Error(
+              ErrMsgLimit,
+              "Category Code", Subtype,
+              ClaimCategoryRec."Amount Limit",
+              YearlyUsed,
+              ClaimCategoryRec."Amount Limit" - YearlyUsed);
     end;
 }

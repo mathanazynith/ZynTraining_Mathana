@@ -15,47 +15,17 @@ page 50229 "Expense Claim List"
             {
                 Editable = false;
 
-                field("Claim ID"; Rec."Claim ID")
-                {
-                    ApplicationArea = All;
-                }
-                field("Category"; Rec."Category Code")
-                {
-                    ApplicationArea = All;
-                }
-                field("Employee No."; Rec."Employee No.")
-                {
-                    ApplicationArea = All;
-                }
-                field("Category Name"; Rec."Category Name")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Claim Date"; Rec."Claim Date")
-                {
-                    ApplicationArea = All;
-                }
-                field("Bill Date"; Rec."Bill Date")
-                {
-                    ApplicationArea = All;
-                }
-                field("Amount"; Rec.Amount)
-                {
-                    ApplicationArea = All;
-                }
-                field("Status"; Rec.Status)
-                {
-                    ApplicationArea = All;
-                }
-                field("Remarks"; Rec.Remarks)
-                {
-                    ApplicationArea = All;
-                }
-                field("Subtype"; Rec.Subtype)
-                {
-                    ApplicationArea = All;
-                }
+                field("Claim ID"; Rec."Claim ID") { ApplicationArea = All; }
+                field("Category"; Rec."Category Code") { ApplicationArea = All; }
+                field("Employee No."; Rec."Employee No.") { ApplicationArea = All; }
+                field("Category Name"; Rec."Category Name") { ApplicationArea = All; Editable = false; }
+                field("Claim Date"; Rec."Claim Date") { ApplicationArea = All; }
+                field("Bill Date"; Rec."Bill Date") { ApplicationArea = All; }
+                field("Amount"; Rec.Amount) { ApplicationArea = All; }
+                field("Status"; Rec.Status) { ApplicationArea = All; }
+                field("Remarks"; Rec.Remarks) { ApplicationArea = All; }
+                field("Subtype"; Rec.Subtype) { ApplicationArea = All; }
+                field("Rejection Reason"; Rec."Rejection Reason") { ApplicationArea = All; Editable = false;  }
             }
         }
     }
@@ -74,17 +44,25 @@ page 50229 "Expense Claim List"
                 var
                     ConfirmMsg: Label 'Are you sure you want to cancel this claim?';
                 begin
+                    if Rec.Status = Rec.Status::Approved then begin
+                        ErrorMsg := 'Approved claims cannot be cancelled.';
+                        Error(ErrorMsg);
+                    end;
 
-                    if Rec.Status = Rec.Status::Approved then
-                        Error('Approved claims cannot be cancelled.');
-                    if Rec.Status = Rec.Status::Rejected then
-                        Error('Rejected claims cannot be cancelled.');
-                    if Rec.Status = Rec.Status::Cancelled then
-                        Error('This claim is already cancelled.');
+                    if Rec.Status = Rec.Status::Rejected then begin
+                        ErrorMsg := 'Rejected claims cannot be cancelled.';
+                        Error(ErrorMsg);
+                    end;
 
-                    if Rec.Status <> Rec.Status::"Pending Approval" then
-                        Error('Only claims in Pending Approval status can be cancelled.');
+                    if Rec.Status = Rec.Status::Cancelled then begin
+                        ErrorMsg := 'This claim is already cancelled.';
+                        Error(ErrorMsg);
+                    end;
 
+                    if Rec.Status <> Rec.Status::"Pending Approval" then begin
+                        ErrorMsg := 'Only claims in Pending Approval status can be cancelled.';
+                        Error(ErrorMsg);
+                    end;
 
                     if Confirm(ConfirmMsg, false) then begin
                         Rec.Status := Rec.Status::Cancelled;
@@ -95,4 +73,7 @@ page 50229 "Expense Claim List"
             }
         }
     }
+
+    var
+        ErrorMsg: Text;
 }

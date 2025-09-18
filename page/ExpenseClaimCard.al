@@ -57,6 +57,7 @@ page 50231 "Expense Claim Card"
                             Message('No file uploaded.');
                     end;
                 }
+                field("Rejection Reason"; Rec."Rejection Reason") { ApplicationArea = All; Editable = false; MultiLine = true; }
             }
         }
     }
