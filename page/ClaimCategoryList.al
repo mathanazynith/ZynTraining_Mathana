@@ -1,11 +1,11 @@
-page 50227 "Claim Category List"
+page 50227 "ZYN_Claim Category List"
 {
     PageType = List;
-    SourceTable = "Claim Category";
+    SourceTable = "ZYN_Claim Category";
     Caption = 'Claim Category List';
     ApplicationArea = All;
     UsageCategory = Lists;
-    CardPageId = "Claim Category Card";
+    CardPageId = "ZYN_Claim Category Card";
 
 
     layout

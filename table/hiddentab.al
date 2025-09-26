@@ -1,4 +1,4 @@
-table 50180 "Hidden Table"
+table 50180 "ZYN_Hidden Table"
 {
     Caption = 'Hidden Table';
     DataClassification = ToBeClassified;
@@ -9,21 +9,21 @@ table 50180 "Hidden Table"
         {
             Caption = 'Employee Id';
             DataClassification = CustomerContent;
-            TableRelation = "Employee Table"."Employee Id";
+            TableRelation = "ZYN_Employee Table"."Employee Id";
         }
 
         field(2; "Category Name"; Code[30])
         {
             Caption = 'Category Name';
             DataClassification = CustomerContent;
-            TableRelation = "Leave Category"."Category Name";
+            TableRelation = "ZYN_Leave Category"."Category Name";
         }
 
         field(3; "Days Allotted"; Integer)
         {
             Caption = 'Days Allotted';
             FieldClass = FlowField;
-            CalcFormula = lookup("Leave Category"."No. of Days Allowed"
+            CalcFormula = lookup("ZYN_Leave Category"."No. of Days Allowed"
                                  where("Category Name" = field("Category Name")));
             Editable = false;
         }
@@ -32,7 +32,7 @@ table 50180 "Hidden Table"
         {
             Caption = 'Leaves Taken';
             FieldClass = FlowField;
-            CalcFormula = sum("Leave Request"."No. of Days"
+            CalcFormula = sum("ZYN_Leave Request"."No. of Days"
                       where("Employee" = field("Employee Id"),
                             "Leave Category" = field("Category Name"),
                             Status = const(Approved)));

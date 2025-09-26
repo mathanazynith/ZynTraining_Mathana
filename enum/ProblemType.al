@@ -1,4 +1,4 @@
-enum 50117 "Problem Type"
+enum 50117 "ZYN_Problem Type"
 {
     Extensible = true;
 

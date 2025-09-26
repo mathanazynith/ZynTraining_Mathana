@@ -1,4 +1,4 @@
-table 50127 "Extended Table"
+table 50127 "ZYN_Extended Table"
 {
     DataClassification = ToBeClassified;
 
@@ -24,7 +24,7 @@ table 50127 "Extended Table"
         {
             Caption = 'Customer no';
         }
-        field(6; "Text Code Type"; Enum "Text Code Enum")
+        field(6; "Text Code Type"; Enum "ZYN_Text Code Enum")
         {
             Caption = 'Text Code Type';
             DataClassification = ToBeClassified;

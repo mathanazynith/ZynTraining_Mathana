@@ -1,4 +1,4 @@
-table 50176 "Leave Request"
+table 50176 "ZYN_Leave Request"
 {
     Caption = 'Leave Request';
     DataClassification = ToBeClassified;
@@ -16,14 +16,14 @@ table 50176 "Leave Request"
         {
             Caption = 'Employee';
             DataClassification = CustomerContent;
-            TableRelation = "Employee Table"."Employee Id";
+            TableRelation = "ZYN_Employee Table"."Employee Id";
         }
 
         field(3; "Employee Name"; Text[100])
         {
             Caption = 'Employee Name';
             FieldClass = FlowField;
-            CalcFormula = lookup("Employee Table"."Employee Name" where("Employee Id" = field("Employee")));
+            CalcFormula = lookup("ZYN_Employee Table"."Employee Name" where("Employee Id" = field("Employee")));
             Editable = false;
         }
 
@@ -31,7 +31,7 @@ table 50176 "Leave Request"
         {
             Caption = 'Leave Category';
             DataClassification = CustomerContent;
-            TableRelation = "Leave Category"."Category Name";
+            TableRelation = "ZYN_Leave Category"."Category Name";
         }
 
         
@@ -60,7 +60,7 @@ table 50176 "Leave Request"
     end;
         }
 
-        field(8; Status; Enum "Leave Status Enum")
+        field(8; Status; Enum "ZYN_Leave Status Enum")
         {
             Caption = 'Status';
             InitValue = 'Pending';
@@ -77,7 +77,7 @@ field(50000; "Remaining Leaves"; Integer)
             Editable = false;
             FieldClass = FlowField;
 
-            CalcFormula = lookup("Hidden Table"."Remaining Leaves"
+            CalcFormula = lookup("ZYN_Hidden Table"."Remaining Leaves"
                 where("Employee Id" = field("Employee"),
                       "Category Name" = field("Leave Category")));
         }
@@ -94,7 +94,7 @@ field(50000; "Remaining Leaves"; Integer)
 
     trigger OnInsert()
     var
-        LastIndex: Record "Leave Request";
+        LastIndex: Record "ZYN_Leave Request";
         LastId: Integer;
         LastIdStr: Code[20];
     begin

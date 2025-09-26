@@ -1,4 +1,4 @@
-table 50150 "Recurring Expense"
+table 50150 "ZYN_Recurring Expense"
 {
     Caption = 'Recurring Expense';
     DataClassification = ToBeClassified;
@@ -10,21 +10,18 @@ table 50150 "Recurring Expense"
             Caption = 'Recurring ID';
             DataClassification = ToBeClassified;
         }
-
-        
-
-        field(3; "Category Code"; Code[20])
+        field(2; "Category Code"; Code[20])
         {
             Caption = 'Category';
-            TableRelation = "Expense Category".Name;
+            TableRelation = "ZYN_Expense Category".Name;
         }
 
-        field(4; Amount; Decimal)
+        field(3; Amount; Decimal)
         {
             Caption = 'Amount';
         }
 
-        field(5; Cycle; Enum "Expense Cycle")
+        field(4; Cycle; Enum "ZYN_Expense Cycle")
         {
             Caption = 'Cycle';
             trigger OnValidate()
@@ -56,7 +53,7 @@ table 50150 "Recurring Expense"
     }
     trigger OnInsert()
     var
-        LastIndex: Record "Recurring Expense";
+        LastIndex: Record "ZYN_Recurring Expense";
         LastId: Integer;
         LastIdStr: Code[20];
     begin

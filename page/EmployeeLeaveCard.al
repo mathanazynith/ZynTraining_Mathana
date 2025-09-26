@@ -1,7 +1,7 @@
-page 50180 "Employees Card"
+page 50180 "ZYN_Employees Card"
 {
     PageType = Card;
-    SourceTable = "Employee Table";
+    SourceTable = "ZYN_Employee Table";
     ApplicationArea = All;
     Caption = 'Employee Card';
 
@@ -46,7 +46,7 @@ page 50180 "Employees Card"
 
                 trigger OnAction()
                 var
-                    LeaveReq: Record "Leave Request";
+                    LeaveReq: Record "ZYN_Leave Request";
                 begin
                     
                     LeaveReq.Init();
@@ -54,7 +54,7 @@ page 50180 "Employees Card"
                     LeaveReq.Insert(true);
 
                   
-                    PAGE.Run(PAGE::"Leave Request Card", LeaveReq);
+                    PAGE.Run(PAGE::"ZYN_Leave Request Card", LeaveReq);
                 end;
             }
         }

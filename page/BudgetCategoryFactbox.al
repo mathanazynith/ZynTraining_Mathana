@@ -1,7 +1,7 @@
-page 50160 "BudgetCategoryFactBox"
+page 50160 "ZYN_BudgetCategoryFactBox"
 {
     PageType = CardPart;
-    SourceTable = "Expense Category";
+    SourceTable = "ZYN_Expense Category";
     Caption = 'Budget Summary';
     ApplicationArea = All;
 
@@ -21,8 +21,8 @@ page 50160 "BudgetCategoryFactBox"
                     DrillDown = true;
                     trigger OnDrillDown()
                     var
-                        BudgetList: Page "Budget Tracker List";
-                        Expense: Record "Budget Tracker";
+                        BudgetList: Page "ZYN_Budget Tracker List";
+                        Expense: Record "ZYN_Budget Tracker";
                     begin
                         SetMonthlyFilter(Expense);
                         BudgetList.SetTableView(Expense);
@@ -38,8 +38,8 @@ page 50160 "BudgetCategoryFactBox"
                     DrillDown = true;
                     trigger OnDrillDown()
                     var
-                        BudgetList: Page "Budget Tracker List";
-                        Expense: Record "Budget Tracker";
+                        BudgetList: Page "ZYN_Budget Tracker List";
+                        Expense: Record "ZYN_Budget Tracker";
                     begin
                         SetQuarterlyFilter(Expense);
                         BudgetList.SetTableView(Expense);
@@ -55,8 +55,8 @@ page 50160 "BudgetCategoryFactBox"
                     DrillDown = true;
                     trigger OnDrillDown()
                     var
-                        BudgetList: Page "Budget Tracker List";
-                        Expense: Record "Budget Tracker";
+                        BudgetList: Page "ZYN_Budget Tracker List";
+                        Expense: Record "ZYN_Budget Tracker";
                     begin
                         SetHalfYearlyFilter(Expense);
                         BudgetList.SetTableView(Expense);
@@ -72,8 +72,8 @@ page 50160 "BudgetCategoryFactBox"
                     DrillDown = true;
                     trigger OnDrillDown()
                     var
-                        BudgetList: Page "Budget Tracker List";
-                        Expense: Record "Budget Tracker";
+                        BudgetList: Page "ZYN_Budget Tracker List";
+                        Expense: Record "ZYN_Budget Tracker";
                     begin
                         SetYearlyFilter(Expense);
                         BudgetList.SetTableView(Expense);
@@ -101,7 +101,7 @@ page 50160 "BudgetCategoryFactBox"
     
     local procedure CalcTotalAmount(Period: Code[20]): Decimal
     var
-        Expense: Record "Budget Tracker";
+        Expense: Record "ZYN_Budget Tracker";
         Total: Decimal;
     begin
         case Period of
@@ -124,7 +124,7 @@ page 50160 "BudgetCategoryFactBox"
     end;
 
 
-    local procedure SetMonthlyFilter(var Expense: Record "Budget Tracker")
+    local procedure SetMonthlyFilter(var Expense: Record "ZYN_Budget Tracker")
     var
         StartDate: Date;
         EndDate: Date;
@@ -141,7 +141,7 @@ page 50160 "BudgetCategoryFactBox"
         Expense.SetRange("From Date", StartDate, EndDate);
     end;
 
-    local procedure SetQuarterlyFilter(var Expense: Record "Budget Tracker")
+    local procedure SetQuarterlyFilter(var Expense: Record "ZYN_Budget Tracker")
     var
         StartDate: Date;
         EndDate: Date;
@@ -161,7 +161,7 @@ page 50160 "BudgetCategoryFactBox"
         Expense.SetRange("From Date", StartDate, EndDate);
     end;
 
-    local procedure SetHalfYearlyFilter(var Expense: Record "Budget Tracker")
+    local procedure SetHalfYearlyFilter(var Expense: Record "ZYN_Budget Tracker")
 var
     StartDate: Date;
     EndDate: Date;
@@ -180,7 +180,7 @@ begin
 end;
 
 
-    local procedure SetYearlyFilter(var Expense: Record "Budget Tracker")
+    local procedure SetYearlyFilter(var Expense: Record "ZYN_Budget Tracker")
     var
         StartDate: Date;
         EndDate: Date;

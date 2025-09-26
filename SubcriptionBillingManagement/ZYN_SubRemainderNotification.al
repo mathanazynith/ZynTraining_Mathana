@@ -1,10 +1,10 @@
-codeunit 50250 "Subscription Expiry Notifier"
+codeunit 50250 "ZYN_SubscriptionExpiryNotifier"
 {
     Subtype = Normal;
 
     procedure NotifyExpiringSubscriptions()
     var
-        SubRec: Record Subscription;
+        SubRec: Record ZYN_Subscription;
         EndDateLimit: Date;
         ExpiryNotification: Notification;
         NotificationMessage: Text;

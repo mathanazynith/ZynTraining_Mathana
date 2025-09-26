@@ -1,7 +1,7 @@
-page 50233 "Expense Claim Approval List"
+page 50233 "ZYN_ExpenseClaimApprovalList"
 {
     PageType = List;
-    SourceTable = "Expense Claim";
+    SourceTable = "ZYN_Expense Claim";
     Caption = 'Expense Claim Approval List';
     ApplicationArea = All;
     UsageCategory = Lists;
@@ -60,8 +60,8 @@ page 50233 "Expense Claim Approval List"
 
                 trigger OnAction()
                 var
-                    ClaimCategoryRec: Record "Claim Category";
-                    TempRec: Record "Expense Claim";
+                    ClaimCategoryRec: Record "ZYN_Claim Category";
+                    TempRec: Record "ZYN_Expense Claim";
                     MaxBillDate: Date;
                 begin
                     if Rec.Status <> Rec.Status::"Pending Approval" then begin
@@ -147,6 +147,6 @@ page 50233 "Expense Claim Approval List"
     var
         ErrorMsg: Text;
         InStr: InStream;
-        RejectReasonDlg: Page "Reject Reason Dialog";
+        RejectReasonDlg: Page "ZYN_Reject Reason Dialog";
         FileName: Text[250];
 }

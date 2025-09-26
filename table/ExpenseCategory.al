@@ -1,4 +1,4 @@
-table 50133 "Expense Category"
+table 50133 "ZYN_Expense Category"
 {
     Caption = 'Expense Category';
     DataClassification = ToBeClassified;
@@ -23,7 +23,7 @@ table 50133 "Expense Category"
             Editable = false;
            
             FieldClass = FlowField;
-            CalcFormula = lookup("Budget Tracker".Amount where("Expense Category" = field(Name)));
+            CalcFormula = lookup("ZYN_Budget Tracker".Amount where("Expense Category" = field(Name)));
         }
     }
 

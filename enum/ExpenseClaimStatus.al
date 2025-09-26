@@ -1,4 +1,4 @@
-enum 50223 "Expense Claim Status"
+enum 50223 "ZYN_Expense Claim Status"
 {
     Extensible = true;
 

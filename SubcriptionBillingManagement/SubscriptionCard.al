@@ -1,7 +1,7 @@
-page 50206 "Subscription Card"
+page 50206 "ZYN_Subscription Card"
 {
     PageType = Card;
-    SourceTable = Subscription;
+    SourceTable = ZYN_Subscription;
     Caption = 'Subscription Card';
     UsageCategory = Administration;
     ApplicationArea=All;

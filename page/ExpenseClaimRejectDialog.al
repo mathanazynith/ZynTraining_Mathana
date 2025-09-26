@@ -1,4 +1,4 @@
-page 50234 "Reject Reason Dialog"
+page 50234 "ZYN_Reject Reason Dialog"
 {
     PageType = StandardDialog;
     Caption = 'Enter Rejection Reason';
@@ -11,7 +11,7 @@ page 50234 "Reject Reason Dialog"
         {
             group(General)
             {
-                field(Reason; ReasonTxt)
+                field(Reason; ReasonTxt) 
                 {
                     ApplicationArea = All;
                     Caption = 'Reason';

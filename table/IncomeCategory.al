@@ -1,4 +1,4 @@
-table 50131 "Income Category"
+table 50131 "ZYN_Income Category"
 {
     Caption = 'Income Category';
     DataClassification = ToBeClassified;

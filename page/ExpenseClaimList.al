@@ -1,11 +1,11 @@
-page 50229 "Expense Claim List"
+page 50229 "ZYN_Expense Claim List"
 {
     PageType = List;
-    SourceTable = "Expense Claim";
+    SourceTable = "ZYN_Expense Claim";
     Caption = 'Expense Claim List';
     ApplicationArea = All;
     UsageCategory = Lists;
-    CardPageId = "Expense Claim Card";
+    CardPageId = "ZYN_Expense Claim Card";
 
     layout
     {

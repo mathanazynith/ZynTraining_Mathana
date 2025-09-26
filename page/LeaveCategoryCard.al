@@ -1,7 +1,7 @@
-page 50175 "Leave Category Card"
+page 50175 "ZYN_Leave Category Card"
 {
     PageType = Card;
-    SourceTable = "Leave Category";
+    SourceTable = "ZYN_Leave Category";
     ApplicationArea = All;
     Caption = 'Leave Category Card';
 

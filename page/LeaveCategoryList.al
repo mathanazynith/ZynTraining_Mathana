@@ -1,12 +1,12 @@
-page 50174 "Leave Category List"
+page 50174 "ZYN_Leave Category List"
 {
     PageType = List;
-    SourceTable = "Leave Category";
+    SourceTable = "ZYN_Leave Category";
     ApplicationArea = All;
     Caption = 'Leave Category List';
     Editable = false; 
     UsageCategory = Lists;
-    CardPageId = "Leave Category Card";
+    CardPageId = "ZYN_Leave Category Card";
 
     layout
     {

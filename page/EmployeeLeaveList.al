@@ -1,12 +1,12 @@
-page 50171 "Employees List"
+page 50171 "ZYN_Employees List"
 {
     PageType = List;
-    SourceTable = "Employee Table";
+    SourceTable = "ZYN_Employee Table";
     ApplicationArea = All;
     Caption = 'Employee List';
     Editable = false; 
     UsageCategory = Lists;
-    CardPageId = "Employees Card"; 
+    CardPageId = "ZYN_Employees Card"; 
 
     layout
     {
@@ -35,7 +35,7 @@ page 50171 "Employees List"
 
         area(FactBoxes)
         {
-            part(EmployeeAssetCue; "Employee Asset Cue FactBox")
+            part(EmployeeAssetCue; "ZYN_Employee Asset Cue FactBox")
             {
                 ApplicationArea = All;
                 SubPageLink = "Employee ID" = field("Employee Id"); 

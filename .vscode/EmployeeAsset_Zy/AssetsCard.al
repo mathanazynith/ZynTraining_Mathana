@@ -1,7 +1,7 @@
-page 50190 "Assets Card"
+page 50190 "ZYN_Assets Card"
 {
     PageType = Card;
-    SourceTable = Assets;
+    SourceTable = ZYN_Assets;
     Caption = 'Assets Card';
     ApplicationArea = All;
     UsageCategory = Administration;

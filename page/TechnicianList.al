@@ -1,11 +1,11 @@
-page 50106 "Technician List"
+page 50106 "ZYN_Technician List"
 {
     PageType = List;
-    SourceTable = "Technician";
+    SourceTable = "ZYN_Technician";
     ApplicationArea = All;
     UsageCategory = Lists;
     Caption = 'Technician List';
-    CardPageId = "Technician Card";
+    CardPageId = "ZYN_Technician Card";
 
     layout
     {
@@ -36,7 +36,7 @@ page 50106 "Technician List"
                 }
 
             }
-             part("Assigned Problems"; "Technician Problems")
+             part("Assigned Problems"; "ZYN_Technician Problems")
             {
                 ApplicationArea = All;
                 SubPageLink = "Technician" = FIELD("Tech. Id");

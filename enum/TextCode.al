@@ -1,4 +1,4 @@
-enum 50127 "Text Code Enum"
+enum 50127 "ZYN_Text Code Enum"
 {
     Extensible = true;
     Caption = 'Text Code Type';

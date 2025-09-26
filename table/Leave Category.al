@@ -1,4 +1,4 @@
-table 50173 "Leave Category"
+table 50173 "ZYN_Leave Category"
 {
     Caption = 'Leave Category';
     DataClassification = ToBeClassified;
@@ -37,8 +37,8 @@ table 50173 "Leave Category"
 
    trigger OnInsert()
 var
-    Employee: Record "Employee Table";
-    HiddenTable: Record "Hidden Table";
+    Employee: Record "ZYN_Employee Table";
+    HiddenTable: Record "ZYN_Hidden Table";
 begin
     if Employee.FindSet() then
         repeat
@@ -60,8 +60,8 @@ begin
 end;
 trigger Onmodify()
 var
-    Employee: Record "Employee Table";
-    HiddenTable: Record "Hidden Table";
+    Employee: Record "ZYN_Employee Table";
+    HiddenTable: Record "ZYN_Hidden Table";
 begin
     if Employee.FindSet() then
         repeat

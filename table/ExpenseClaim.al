@@ -1,4 +1,4 @@
-table 50226 "Expense Claim"
+table 50226 "ZYN_Expense Claim"
 {
     Caption = 'Expense Claim';
     DataClassification = ToBeClassified;
@@ -11,8 +11,8 @@ table 50226 "Expense Claim"
             Editable = false;
             DataClassification = CustomerContent;
         }
-        field(2; "Category Code"; Code[20])
-        {
+    field(2; "Category Code"; Code[20])
+        {    
             Caption = 'Category Code';
             DataClassification = CustomerContent;
         }
@@ -33,7 +33,7 @@ table 50226 "Expense Claim"
         field(5; "Employee No."; Code[40])
         {
             Caption = 'Employee No.';
-            TableRelation = "Employee Table"."Employee Id";
+            TableRelation = "ZYN_Employee Table"."Employee Id";
             DataClassification = CustomerContent;
         }
 
@@ -54,7 +54,7 @@ table 50226 "Expense Claim"
             end;
         }
 
-        field(8; Status; Enum "Expense Claim Status")
+        field(8; Status; Enum "ZYN_Expense Claim Status")
         {
             Caption = 'Status';
             InitValue = "Pending Approval";
@@ -101,7 +101,7 @@ table 50226 "Expense Claim"
 
     trigger OnInsert()
     var
-        LastIndex: Record "Expense Claim";
+        LastIndex: Record "ZYN_Expense Claim";
         LastId: Integer;
         LastIdStr: Code[20];
     begin
@@ -119,8 +119,8 @@ table 50226 "Expense Claim"
 
     local procedure ValidateClaimAmount()
     var
-        ClaimCategoryRec: Record "Claim Category";
-        ExistingClaim: Record "Expense Claim";
+        ClaimCategoryRec: Record "ZYN_Claim Category";
+        ExistingClaim: Record "ZYN_Expense Claim";
         ClaimYear: Integer;
         YearlyUsed: Decimal;
         StartOfYear: Date;

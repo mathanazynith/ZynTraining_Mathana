@@ -1,7 +1,7 @@
-page 50158 "Budget FactBox"
+page 50158 "ZYN_Budget FactBox"
 {
     PageType = ListPart;
-    SourceTable = "Budget Tracker";
+    SourceTable = "ZYN_Budget Tracker";
     ApplicationArea = All;
     Caption = 'Monthly Budget Overview';
     Editable = false; 

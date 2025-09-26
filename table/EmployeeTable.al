@@ -1,4 +1,4 @@
-table 50170 "Employee Table"
+table 50170 "ZYN_Employee Table"
 {
     Caption = 'Employee Table';
     DataClassification = ToBeClassified;
@@ -16,12 +16,12 @@ table 50170 "Employee Table"
             Caption = 'Employee Name';
             DataClassification = CustomerContent;
         }
-        field(3; Role; Enum "Role Enum")
+        field(3; Role; Enum "ZYN_Role Enum")
         {
             Caption = 'Role';
             DataClassification = CustomerContent;
         }
-        field(4; Department; Enum "Department Enum")
+        field(4; Department; Enum "ZYN_Department Enum")
         {
             Caption = 'Department';
             DataClassification = CustomerContent;
@@ -43,11 +43,11 @@ table 50170 "Employee Table"
     }
    trigger OnInsert()
     var
-        LastIndex: Record "Employee Table";
+        LastIndex: Record "ZYN_Employee Table";
         LastId: Integer;
         LastIdStr: Code[20];
-        LeaveCategory: Record "Leave Category";
-        HiddenTable: Record "Hidden Table";
+        LeaveCategory: Record "ZYN_Leave Category";
+        HiddenTable: Record "ZYN_Hidden Table";
     begin
         
         if "Employee Id" = '' then begin

@@ -1,7 +1,7 @@
-page 50228 "Claim Category Card"
+page 50228 "ZYN_Claim Category Card"
 {
     PageType = Card;
-    SourceTable = "Claim Category";
+    SourceTable = "ZYN_Claim Category";
     Caption = 'Claim Category Card';
     ApplicationArea = All;
     UsageCategory = Administration;

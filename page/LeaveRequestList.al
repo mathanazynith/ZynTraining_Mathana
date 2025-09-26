@@ -1,8 +1,8 @@
-page 50172 "Leave Request List"
+page 50172 "ZYN_Leave Request List"
 {
     PageType = List;
     ApplicationArea = All;
-    SourceTable = "Leave Request";
+    SourceTable = "ZYN_Leave Request";
     UsageCategory = Lists;
     Caption = 'Leave Requests';
 
@@ -34,8 +34,8 @@ page 50172 "Leave Request List"
 
                 trigger OnAction()
                 var
-                    LeaveRequest: Record "Leave Request";
-                    Hidden: Record "Hidden Table";
+                    LeaveRequest: Record "ZYN_Leave Request";
+                    Hidden: Record "ZYN_Hidden Table";
                     DaysRequested: Integer;
                 begin
                     CurrPage.SetSelectionFilter(LeaveRequest);
@@ -94,7 +94,7 @@ page 50172 "Leave Request List"
 
                 trigger OnAction()
                 var
-                    LeaveRequest: Record "Leave Request";
+                    LeaveRequest: Record "ZYN_Leave Request";
                 begin
                     CurrPage.SetSelectionFilter(LeaveRequest);
 

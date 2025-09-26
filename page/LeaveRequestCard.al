@@ -1,7 +1,7 @@
-page 50177 "Leave Request Card"
+page 50177 "ZYN_Leave Request Card"
 {
     PageType = Card;
-    SourceTable = "Leave Request";
+    SourceTable = "ZYN_Leave Request";
     ApplicationArea = All;
     Caption = 'Leave Request Card';
 
@@ -58,7 +58,7 @@ page 50177 "Leave Request Card"
     }
 
     var
-        HiddenRec: Record "Hidden Table";
+        HiddenRec: Record "ZYN_Hidden Table";
         RemainingTemp: Integer;
 
     trigger OnAfterGetRecord()

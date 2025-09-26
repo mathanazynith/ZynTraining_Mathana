@@ -1,7 +1,7 @@
-page 50157 "Budget Tracker Card"
+page 50157 "ZYN_Budget Tracker Card"
 {
     PageType = Card;
-    SourceTable = "Budget Tracker";
+    SourceTable = "ZYN_Budget Tracker";
     Caption = 'BudgetTracker';
     ApplicationArea = All;
 

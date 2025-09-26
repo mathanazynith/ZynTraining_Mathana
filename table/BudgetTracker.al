@@ -1,4 +1,4 @@
-table 50108 "Budget Tracker"
+table 50108 "ZYN_Budget Tracker"
 {
     DataClassification = ToBeClassified;
 
@@ -25,11 +25,11 @@ table 50108 "Budget Tracker"
         field(4; "Expense Category"; Code[20])
         {
             Caption = 'Expense Category';
-            TableRelation = "Expense Category"; 
+            TableRelation = "ZYN_Expense Category"; 
             DataClassification = CustomerContent;
              trigger OnValidate()
             var
-                BudgetRec: Record "Budget Tracker";
+                BudgetRec: Record "ZYN_Budget Tracker";
             begin
                 if ("From Date" <> 0D) and ("To Date" <> 0D) then begin
                     BudgetRec.Reset();
@@ -62,7 +62,7 @@ table 50108 "Budget Tracker"
     }
     trigger OnInsert()
     var
-        LastIndex: Record "Budget Tracker";
+        LastIndex: Record "ZYN_Budget Tracker";
         LastId: Integer;
         LastIdStr: Code[20];
     begin

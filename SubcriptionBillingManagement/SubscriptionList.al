@@ -1,11 +1,11 @@
-page 50205 "Subscription List"
+page 50205 "ZYN_Subscription List"
 {
     PageType = List;
-    SourceTable = Subscription;
+    SourceTable = ZYN_Subscription;
     Caption = 'Subscription List';
     UsageCategory = Lists;
     ApplicationArea = All;
-    CardPageId = "Subscription Card";
+    CardPageId = "ZYN_Subscription Card";
 
     layout
     {

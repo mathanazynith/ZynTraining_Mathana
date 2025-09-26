@@ -1,7 +1,7 @@
-page 50300 "Recurring Invoice Card"
+page 50300 "ZYN_Recurring Invoice Card"
 {
     PageType = Card;
-    SourceTable = "Recurring Sales Invoice";
+    SourceTable = "ZYN_Recurring Sales Invoice";
     Caption = 'Recurring Invoice Card';
     UsageCategory = Tasks;
     ApplicationArea=All;

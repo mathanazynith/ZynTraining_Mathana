@@ -1,7 +1,7 @@
-page 50118 "Modify List"
+page 50276 "ZYN_Modified List"
 {
     PageType = List;
-    SourceTable = "Modify Log";
+    SourceTable = "ZYN_Modify Log";
     ApplicationArea = All;
     UsageCategory = Lists;
     Caption = 'Modify List';

@@ -17,7 +17,7 @@ pageextension 50117 SalesorderCardExt extends "Sales order"
 
         addlast(Content)
         {
-            part(StandardTextLines; "Standard Text Line Part")
+            part(StandardTextLines; "ZYN_Standard Text Line Part")
             {
                 ApplicationArea = All;
                 SubPageLink = "Document No." = field("No."),
@@ -39,7 +39,7 @@ pageextension 50117 SalesorderCardExt extends "Sales order"
 
         addlast(Content)
         {
-            part(StandardTextContent; "End Text Part")
+            part(StandardTextContent; "ZYN_End Text Part")
             {
                 ApplicationArea = All;
                 SubPageLink = "Document No." = field("No."),

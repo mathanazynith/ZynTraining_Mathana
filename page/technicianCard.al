@@ -1,7 +1,7 @@
-page 50111 "Technician Card"
+page 50111 "ZYN_Technician Card"
 {
     PageType = Card;
-    SourceTable = "Technician";
+    SourceTable = "ZYN_Technician";
     ApplicationArea = All;
     Caption = 'Technician Card';
 

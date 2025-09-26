@@ -1,7 +1,7 @@
-page 50231 "Expense Claim Card"
+page 50231 "ZYN_Expense Claim Card"
 {
     PageType = Card;
-    SourceTable = "Expense Claim";
+    SourceTable = "ZYN_Expense Claim";
     Caption = 'Expense Claim';
     ApplicationArea = All;
 
@@ -17,10 +17,10 @@ page 50231 "Expense Claim Card"
                     ApplicationArea = All;
                     trigger OnDrillDown()
                     var
-                        ClaimCategoryRec: Record "Claim Category";
+                        ClaimCategoryRec: Record "ZYN_Claim Category";
                         SelectedCategoryCode: Code[20];
                     begin
-                        if PAGE.RunModal(PAGE::"Claim Category List", ClaimCategoryRec) = ACTION::LookupOK then begin
+                        if PAGE.RunModal(PAGE::"ZYN_Claim Category List", ClaimCategoryRec) = ACTION::LookupOK then begin
                             SelectedCategoryCode := ClaimCategoryRec.Code;
                             Rec."Category Code" := SelectedCategoryCode;
                             Rec."Category Name" := ClaimCategoryRec.Name;

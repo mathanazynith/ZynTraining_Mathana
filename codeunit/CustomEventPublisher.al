@@ -1,0 +1,7 @@
+codeunit 50110 ZYN_CustomerEventPublisher
+{
+    [IntegrationEvent(false, false)]
+    procedure OnCustomerCreated(CustomerNo: Code[20]; CustomerName: Text[100])
+    begin
+    end;
+}

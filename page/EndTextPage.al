@@ -1,7 +1,7 @@
-page 50131 "End Text Part"
+page 50131 "ZYN_End Text Part"
 {
     PageType = ListPart;
-    SourceTable = "Extended Table" ;
+    SourceTable = "ZYN_Extended Table" ;
     ApplicationArea = All;
     Caption = 'End Text Content';
 

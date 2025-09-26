@@ -1,4 +1,4 @@
-table 50225 "Claim Category"
+table 50225 "ZYN_Claim Category"
 {
     Caption = 'Claim Category';
     DataClassification = ToBeClassified;
