@@ -6,7 +6,8 @@ codeunit 50272 "ZYN_ContactReplication"
         IsSyncing: Boolean;
         IsSlaveContactCreation: Boolean;
         IsSlaveContactModification: Boolean;
-
+        SingleInstanceMgt: Codeunit "ZYN_CustomerVendorActContMgmt";
+    // Slave Contact Creation Flow Control
     procedure StartSlaveContactCreation()
     begin
         IsSlaveContactCreation := true;
@@ -19,7 +20,8 @@ codeunit 50272 "ZYN_ContactReplication"
         IsSlaveContactModification := false;
     end;
 
-    // Prevent Contact creation in slave company
+    // Prevent Manual Contact Create in Slave
+
     [EventSubscriber(ObjectType::Table, Database::Contact, 'OnBeforeInsertEvent', '', true, true)]
     local procedure ContactOnBeforeInsert(var Rec: Record Contact; RunTrigger: Boolean)
     var
@@ -30,64 +32,53 @@ codeunit 50272 "ZYN_ContactReplication"
                 Error(CreateContactInSlaveErr);
     end;
 
-    // Prevent Contact deletion in slave and check open/released documents
+    // Prevent Delete in Slave
+
     [EventSubscriber(ObjectType::Table, Database::Contact, 'OnBeforeDeleteEvent', '', true, true)]
     local procedure ContactOnBeforeDelete(var Rec: Record Contact; RunTrigger: Boolean)
     var
-        ZynCompany: Record ZYN_CustomCompany;
-        SalesHeader: Record "Sales Header";
-        PurchHeader: Record "Purchase Header";
-        SlaveCompany: Record ZYN_CustomCompany;
-        SlaveSales: Record "Sales Header";
-        SlavePurch: Record "Purchase Header";
+        ZynCompany, SlaveCompany : Record ZYN_CustomCompany;
+        SalesHeader, PurchHeader, SlaveSales, SlavePurch : Record "Sales Header";
     begin
         if not ZynCompany.Get(COMPANYNAME) then
             exit;
 
-        // Prevent deletion in slave companies directly
         if (not ZynCompany."Is Master") and (ZynCompany."Master Company Name" <> '') then
             Error(DeleteContactInSlaveErr);
 
-        // Check open or released documents in master company
+        // Prevent delete if open/released docs exist in master or slave
         SalesHeader.SetRange("Bill-to Contact No.", Rec."No.");
-        if SalesHeader.FindFirst() then
-            if (SalesHeader.Status in [SalesHeader.Status::Open, SalesHeader.Status::Released]) then
-                Error(OpenSalesMasterErr);
+        if SalesHeader.FindFirst() and (SalesHeader.Status in [SalesHeader.Status::Open, SalesHeader.Status::Released]) then
+            Error(OpenSalesMasterErr);
 
-        PurchHeader.SetRange("Buy-from Contact No.", Rec."No.");
-        if PurchHeader.FindFirst() then
-            if (PurchHeader.Status in [PurchHeader.Status::Open, PurchHeader.Status::Released]) then
-                Error(OpenPurchMasterErr);
+        PurchHeader.SetRange("Bill-to Customer No.", Rec."No.");
+        if PurchHeader.FindFirst() and (PurchHeader.Status in [PurchHeader.Status::Open, PurchHeader.Status::Released]) then
+            Error(OpenPurchMasterErr);
 
-        // Check open or released documents in slave companies
         if ZynCompany."Is Master" then begin
             SlaveCompany.Reset();
             SlaveCompany.SetRange("Master Company Name", ZynCompany.Name);
             if SlaveCompany.FindSet() then
                 repeat
-                    // Sales in slave
                     SlaveSales.ChangeCompany(SlaveCompany.Name);
                     SlaveSales.SetRange("Bill-to Contact No.", Rec."No.");
-                    if SlaveSales.FindFirst() then
-                        if (SlaveSales.Status in [SlaveSales.Status::Open, SlaveSales.Status::Released]) then
-                            Error(OpenSalesSlaveErr, SlaveCompany.Name);
+                    if SlaveSales.FindFirst() and (SlaveSales.Status in [SlaveSales.Status::Open, SlaveSales.Status::Released]) then
+                        Error(OpenSalesSlaveErr, SlaveCompany.Name);
 
-                    // Purchase in slave
                     SlavePurch.ChangeCompany(SlaveCompany.Name);
-                    SlavePurch.SetRange("Buy-from Contact No.", Rec."No.");
-                    if SlavePurch.FindFirst() then
-                        if (SlavePurch.Status in [SlavePurch.Status::Open, SlavePurch.Status::Released]) then
-                            Error(OpenPurchSlaveErr, SlaveCompany.Name);
+                    SlavePurch.SetRange("Bill-to Contact No.", Rec."No.");
+                    if SlavePurch.FindFirst() and (SlavePurch.Status in [SlavePurch.Status::Open, SlavePurch.Status::Released]) then
+                        Error(OpenPurchSlaveErr, SlaveCompany.Name);
                 until SlaveCompany.Next() = 0;
         end;
     end;
 
-    // Replicate deletion to slave companies after master deletion
+    // Delete Replication: Remove from Slaves
+
     [EventSubscriber(ObjectType::Table, Database::Contact, 'OnAfterDeleteEvent', '', true, true)]
     local procedure ContactOnAfterDelete(var Rec: Record Contact; RunTrigger: Boolean)
     var
-        ZynCompany: Record ZYN_CustomCompany;
-        SlaveCompany: Record ZYN_CustomCompany;
+        ZynCompany, SlaveCompany : Record ZYN_CustomCompany;
         SlaveContact: Record Contact;
     begin
         if IsSyncing then
@@ -99,11 +90,8 @@ codeunit 50272 "ZYN_ContactReplication"
         IsSyncing := true;
 
         if ZynCompany."Is Master" then begin
-            // Delete relations + customer/vendor in Master
             DeleteRelationsAndCustomerVendor(Rec, COMPANYNAME);
 
-            // Replicate to slave companies
-            SlaveCompany.Reset();
             SlaveCompany.SetRange("Master Company Name", ZynCompany.Name);
             if SlaveCompany.FindSet() then
                 repeat
@@ -118,7 +106,8 @@ codeunit 50272 "ZYN_ContactReplication"
         IsSyncing := false;
     end;
 
-    // Helper procedure: delete relations + customer/vendor
+    // Helper: Delete Relations & Linked Customer/Vendor
+
     local procedure DeleteRelationsAndCustomerVendor(var Contact: Record Contact; CompanyName: Text)
     var
         ContBusRel: Record "Contact Business Relation";
@@ -147,97 +136,97 @@ codeunit 50272 "ZYN_ContactReplication"
             until ContBusRel.Next() = 0;
     end;
 
-    // Replicate Contact insert from Master → Slaves
+    // Contact Insert Replication
+
     [EventSubscriber(ObjectType::Table, Database::Contact, 'OnAfterInsertEvent', '', true, true)]
     local procedure ContactOnAfterInsert(var Rec: Record Contact; RunTrigger: Boolean)
     var
-        MasterCompany: Record ZYN_CustomCompany;
-        SlaveCompany: Record ZYN_CustomCompany;
+        MasterCompany, SlaveCompany : Record ZYN_CustomCompany;
         NewContact: Record Contact;
     begin
         if IsSyncing then
             exit;
-        IsSyncing := true;
 
-        if MasterCompany.Get(COMPANYNAME) then begin
-            if MasterCompany."Is Master" then begin
-                SlaveCompany.Reset();
-                SlaveCompany.SetRange("Master Company Name", MasterCompany.Name);
-                if SlaveCompany.FindSet() then
-                    repeat
-                        NewContact.ChangeCompany(SlaveCompany.Name);
-                        if not NewContact.Get(Rec."No.") then begin
-                            NewContact.Init();
-                            NewContact.TransferFields(Rec, true);
-                            NewContact.Insert(true);
-                        end;
-                    until SlaveCompany.Next() = 0;
-            end;
+        if not MasterCompany.Get(COMPANYNAME) then
+            exit;
+
+        if MasterCompany."Is Master" then begin
+            IsSyncing := true;
+            SingleInstanceMgt.SetFromCreateAs(); // Prevent relation replication
+            SlaveCompany.SetRange("Master Company Name", MasterCompany.Name);
+            if SlaveCompany.FindSet() then
+                repeat
+                    NewContact.ChangeCompany(SlaveCompany.Name);
+                    if not NewContact.Get(Rec."No.") then begin
+                        StartSlaveContactCreation();
+                        NewContact.Init();
+                        NewContact.TransferFields(Rec, true);
+                        NewContact."Contact Business Relation" := NewContact."Contact Business Relation"::None; // Force None
+                        NewContact.Insert(true);
+                        EndSlaveContactCreation();
+                    end;
+                until SlaveCompany.Next() = 0;
+            SingleInstanceMgt.ClearFromCreateAs();
+            IsSyncing := false;
         end;
-
-        IsSyncing := false;
     end;
 
-    // Replicate Contact modification from Master → Slaves
+    // Contact Modify Replication
+
     [EventSubscriber(ObjectType::Table, Database::Contact, 'OnAfterModifyEvent', '', true, true)]
     local procedure ContactOnAfterModify(var Rec: Record Contact; var xRec: Record Contact; RunTrigger: Boolean)
     var
-        MasterCompany: Record ZYN_CustomCompany;
-        SlaveCompany: Record ZYN_CustomCompany;
+        MasterCompany, SlaveCompany : Record ZYN_CustomCompany;
         SlaveContact: Record Contact;
-        MasterRef: RecordRef;
-        SlaveRef: RecordRef;
-        Field: FieldRef;
-        SlaveField: FieldRef;
+        MasterRef, SlaveRef : RecordRef;
+        Field, SlaveField : FieldRef;
         i: Integer;
         IsDifferent: Boolean;
     begin
         if IsSyncing then
             exit;
 
-        if MasterCompany.Get(COMPANYNAME) then begin
-            if MasterCompany."Is Master" then begin
-                SlaveCompany.Reset();
-                SlaveCompany.SetRange("Master Company Name", MasterCompany.Name);
-                if SlaveCompany.FindSet() then
-                    repeat
-                        SlaveContact.ChangeCompany(SlaveCompany.Name);
-                        if SlaveContact.Get(Rec."No.") then begin
-                            MasterRef.GetTable(Rec);
-                            SlaveRef.GetTable(SlaveContact);
-                            IsDifferent := false;
+        if not MasterCompany.Get(COMPANYNAME) then
+            exit;
 
-                            for i := 1 to MasterRef.FieldCount do begin
-                                Field := MasterRef.FieldIndex(i);
-                                if Field.Class <> FieldClass::Normal then
-                                    continue;
-                                if Field.Number in [1] then
-                                    continue;
-                                SlaveField := SlaveRef.Field(Field.Number);
-                                if SlaveField.Value <> Field.Value then begin
-                                    IsDifferent := true;
-                                    break;
-                                end;
-                            end;
+        if MasterCompany."Is Master" then begin
+            SlaveCompany.SetRange("Master Company Name", MasterCompany.Name);
+            if SlaveCompany.FindSet() then
+                repeat
+                    SlaveContact.ChangeCompany(SlaveCompany.Name);
+                    if SlaveContact.Get(Rec."No.") then begin
+                        MasterRef.GetTable(Rec);
+                        SlaveRef.GetTable(SlaveContact);
+                        IsDifferent := false;
 
-                            if IsDifferent then begin
-                                IsSyncing := true;
-                                SlaveContact.TransferFields(Rec, false);
-                                SlaveContact."No." := Rec."No.";
-                                SlaveContact.Modify(true);
-                                IsSyncing := false;
+                        for i := 1 to MasterRef.FieldCount do begin
+                            Field := MasterRef.FieldIndex(i);
+                            if Field.Class <> FieldClass::Normal then
+                                continue;
+                            if Field.Number = 1 then // Skip primary key
+                                continue;
+                            SlaveField := SlaveRef.Field(Field.Number);
+                            if SlaveField.Value <> Field.Value then begin
+                                IsDifferent := true;
+                                break;
                             end;
                         end;
-                    until SlaveCompany.Next() = 0;
-            end;
-            if (not MasterCompany."Is Master") and (MasterCompany."Master Company Name" <> '') then begin
-                if (UserId = '') or (UserId = 'NT AUTHORITY\SYSTEM') then
-                    exit;
-                if not RunTrigger then
-                    exit;
+
+                        if IsDifferent then begin
+                            IsSyncing := true;
+                            SingleInstanceMgt.SetFromCreateAs();
+                            StartSlaveContactCreation();
+                            SlaveContact.TransferFields(Rec, false);
+                            SlaveContact."Contact Business Relation" := SlaveContact."Contact Business Relation"::None;
+                            SlaveContact.Modify(true);
+                            EndSlaveContactCreation();
+                            SingleInstanceMgt.ClearFromCreateAs();
+                            IsSyncing := false;
+                        end;
+                    end;
+                until SlaveCompany.Next() = 0;
+        end else if (not MasterCompany."Is Master") and (MasterCompany."Master Company Name" <> '') then
                 Error(ModifyContactInSlaveErr);
-            end;
-        end;
     end;
 
     var

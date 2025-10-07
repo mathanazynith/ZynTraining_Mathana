@@ -1,13 +1,14 @@
-pageextension 50100 ContacListExt extends "Contact List"
-
+pageextension 50287 ContactListsExt extends "Contact List"
 {
     actions
     {
+        // Add a new group with filter buttons
         addlast(processing)
         {
             group(CustomFilters)
             {
                 Caption = 'Filter Contacts';
+
                 action(FilterCustomers)
                 {
                     ApplicationArea = All;
@@ -22,6 +23,7 @@ pageextension 50100 ContacListExt extends "Contact List"
                         CurrPage.Update(false);
                     end;
                 }
+
                 action(FilterVendors)
                 {
                     ApplicationArea = All;
@@ -36,6 +38,7 @@ pageextension 50100 ContacListExt extends "Contact List"
                         CurrPage.Update(false);
                     end;
                 }
+
                 action(FilterBankAccounts)
                 {
                     ApplicationArea = All;
@@ -51,6 +54,27 @@ pageextension 50100 ContacListExt extends "Contact List"
                     end;
                 }
             }
+        }
+
+        // Modify existing actions outside of addlast
+        modify(Customer)
+        {
+            trigger OnBeforeAction()
+            var
+                SingleInstanceMgt: Codeunit "ZYN_CustomerVendorActContMgmt";
+            begin
+                SingleInstanceMgt.SetFromCreateAs();
+            end;
+        }
+
+        modify(Vendor)
+        {
+            trigger OnBeforeAction()
+            var
+                SingleInstanceMgt: Codeunit "ZYN_CustomerVendorActContMgmt";
+            begin
+                SingleInstanceMgt.SetFromCreateAs();
+            end;
         }
     }
 }

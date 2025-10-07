@@ -1,4 +1,5 @@
 pageextension 50105 CustomerpageExtension extends "Customer Card"
+
 {  trigger OnOpenPage()
 begin
     if rec."No."=''then
@@ -55,4 +56,5 @@ pageextension 50133 CopyCustomerToOtherCompany extends "Customer Card"
         if IsNewCustomer and (Rec.Name <> '') then
             Publisher.OnCompanyCreated(Rec);
     end;
+    
 }

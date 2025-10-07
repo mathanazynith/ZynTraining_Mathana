@@ -1,31 +1,9 @@
-pageextension 50104 CustomerCardExt extends "Customer Card"
+pageextension 50280 ZYN_VendorListExt extends "Vendor List"
 {
     actions
     {
         addlast(processing)
         {
-            action(cusLog)
-            {
-                ApplicationArea = All;
-                Caption = 'Customer Log';
-                Image = Log;
-                trigger OnAction()
-                var
-                    LogListPage: Page "ZYN_Log List";
-                begin
-                    LogListPage.SetCustomerNo(Rec."No.");
-                    LogListPage.RunModal();
-                end;
-            }
-            action(ModLog)
-            {
-                ApplicationArea = All;
-                Caption = 'Modify Log';
-                Image = Edit;
-                RunObject = page "ZYN_Modified List";
-                RunPageLink = "Customer No." = field("No.");
-            }
-
             action(SendToSlave)
             {
                 Caption = 'Send To';
@@ -36,7 +14,7 @@ pageextension 50104 CustomerCardExt extends "Customer Card"
 
                 trigger OnAction()
                 var
-                    SelectionCust: Record Customer;
+                    SelectionVend: Record Vendor;
                     ZynCompany: Record "ZYN_CustomCompany";
                     TargetCompany: Record "ZYN_CustomCompany";
                     ContactReplicator: Codeunit "ZYN_CustVendReplication";
@@ -47,8 +25,8 @@ pageextension 50104 CustomerCardExt extends "Customer Card"
                     CurrentCompName := CompanyName();
 
                     // Collect selected customers on the page
-                    CurrPage.SetSelectionFilter(SelectionCust);
-                    if not SelectionCust.FindFirst() then
+                    CurrPage.SetSelectionFilter(SelectionVend);
+                    if not SelectionVend.FindFirst() then
                         Error('Please select at least one customer.');
 
                     // Ensure current company exists in ZYN_CustomCompany
@@ -68,12 +46,12 @@ pageextension 50104 CustomerCardExt extends "Customer Card"
                         CompanyName := TargetCompany.Name;
 
                         // Iterate selected customers and replicate each to the chosen slave
-                        SelectionCust.Reset();
-                        CurrPage.SetSelectionFilter(SelectionCust);
-                        if SelectionCust.FindSet() then
+                        SelectionVend.Reset();
+                        CurrPage.SetSelectionFilter(SelectionVend);
+                        if SelectionVend.FindSet() then
                             repeat
-                             ContactReplicator.SendCustomerToSlave(SelectionCust, CompanyName);
-                            until SelectionCust.Next() = 0;
+                             ContactReplicator.SendVendorToSlave(SelectionVend, CompanyName);
+                            until SelectionVend.Next() = 0;
                     end;
                 end;
             }
